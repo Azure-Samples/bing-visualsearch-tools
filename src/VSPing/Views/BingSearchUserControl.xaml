@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="VSPing.Views.BingSearchUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:localview="clr-namespace:VSPing.Views"
+             xmlns:shared="clr-namespace:VSPing.SharedViews"
+             mc:Ignorable="d" 
+             d:DesignHeight="1024" d:DesignWidth="900">
+    <UserControl.Resources>
+        <!-- This view calls several other views to create the whole window; SearchSection, TabsSection, TagsOutputSection, BottomBarSection, and ImageModSection-->
+        <Style x:Key="myContextMenuClickHandlerStyle">
+            <EventSetter Event="MenuItem.Click" Handler="HyperlinkContextMenu_Copy"/>
+        </Style>
+        <Style x:Key="myCustomizedHyperLinkSkyle" TargetType="Hyperlink">
+            <Style.Resources>
+                <ContextMenu x:Key="hyperLinkStyleContextMenu">
+                    <MenuItem Header="Copy" Style="{StaticResource myContextMenuClickHandlerStyle}"/>
+                </ContextMenu>
+            </Style.Resources>
+            <Setter Property="ContextMenu" Value="{StaticResource hyperLinkStyleContextMenu}"/>
+            <EventSetter Event="RequestNavigate" Handler="Hyperlink_RequestNavigate"/>
+        </Style>
+    </UserControl.Resources>
+    <DockPanel Grid.Column="2" LastChildFill="True">
+        <shared:StatusBarControl DockPanel.Dock="Bottom" Height="20" DataContext="{Binding StatusBarItems}"/>
+        <!-- The status bar will render items from ViewModel StatusBarItems list -->
+        <Grid DockPanel.Dock="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="200"/>
+                <RowDefinition Height="5"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <localview:SearchSection Grid.Row="0"/>
+            <shared:ImageModSection Grid.Row="1"></shared:ImageModSection>
+            <Grid Grid.Row="3">
+                <Grid x:Name="searchResultsGrid"                          
+                          AllowDrop="True"
+                          Drop="searchResultsGrid_Drop" Background="Transparent">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="500"/>
+                    </Grid.ColumnDefinitions>
+                    <localview:TabsSection Grid.Column="0"></localview:TabsSection>
+                    <shared:TagsOutputSection Grid.Column="2"></shared:TagsOutputSection>
+                    <GridSplitter Width="5" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="Gray"/>
+                </Grid>
+            </Grid>
+            <GridSplitter Height="5" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" Background="Gray"/>
+        </Grid>
+    </DockPanel>
+</UserControl>

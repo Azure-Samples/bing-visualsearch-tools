@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="IUPing.Views.ImageResultsGridControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:IUPing.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <!--//> REMOVE Visual Search Experimental View
+    <DataGrid IsReadOnly="True" 
+                                          ItemsSource="{Binding}" 
+                                          HorizontalContentAlignment="Stretch"
+                                          AutoGenerateColumns="False"
+                                          RowHeight="100">
+                                          AllowDrop="True" (Commented Out)
+                                          Drop="searchResultsGrid_Drop (Commented Out)
+        <DataGrid.Columns>
+            <DataGridTemplateColumn Header="Image" Width="100">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <Image Source="{Binding SearchResult.ThumbnailUri}" Height="100" MouseMove="SearchResultImage_MouseMove"/>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="PageTitle" Width="150">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBox IsReadOnly="True" Text="{Binding SearchResult.PageTitle, Mode=OneWay}" TextWrapping="Wrap" BorderThickness="0"/>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="ImageUri" Width="130">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBox IsReadOnly="True" Text="{Binding SearchResult.ImageUri, Mode=OneWay}" TextWrapping="Wrap" BorderThickness="0"/>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="PageUri" Width="130">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBox IsReadOnly="True" Text="{Binding SearchResult.PageUri, Mode=OneWay}" TextWrapping="Wrap" BorderThickness="0"/>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="Rank" Width="40">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBox IsReadOnly="True" Text="{Binding SearchResult.FinalRank}" TextWrapping="NoWrap" BorderThickness="0"/>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="ContentId" Width="70">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBox IsReadOnly="True" Text="{Binding SearchResult.ContentId, Mode=OneWay}" TextWrapping="Wrap" BorderThickness="0"/>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="Terms" Width="80">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBox IsReadOnly="True" Text="{Binding AnnotationTerms, Mode=OneWay}" TextWrapping="Wrap" BorderThickness="0"/>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="Texts" Width="80">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBox IsReadOnly="True" Text="{Binding AnnotationTexts, Mode=OneWay}" TextWrapping="Wrap" BorderThickness="0"/>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="Lang" Width="40">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBox IsReadOnly="True" Text="{Binding SearchResult.PageLanguage, Mode=OneWay}" TextWrapping="Wrap" BorderThickness="0"/>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+        </DataGrid.Columns>
+    </DataGrid>
+    <//-->
+</UserControl>

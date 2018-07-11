@@ -1,0 +1,66 @@
+﻿<UserControl x:Class="VSPing.SharedViews.TagsOutputSection"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:local="clr-namespace:VSPing.ViewModels"
+             xmlns:shared="clr-namespace:VSPing.SharedViews"
+             xmlns:utils="clr-namespace:VSPing.Utils"             
+             xmlns:newtonsoft="clr-namespace:Newtonsoft.Json;assembly=Newtonsoft.Json"
+             xmlns:newtonsoftlinq="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json"
+             mc:Ignorable="d" >
+    <!-- This view renders information related to tags; utilizing TagsActionsControl and JsonTreeViewControl-->
+    <DockPanel Grid.Column="2" LastChildFill="True">
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar>
+                <Button Click="TagsCopyButton_Click">
+                    <Button.Content>
+                        <TextBlock Text="{Binding SelectedValue.Header, ElementName=tagsRequestResponseTabControl, StringFormat=Copy \{0\}}"/>
+                    </Button.Content>
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+        <TabControl x:Name="tagsRequestResponseTabControl" 
+                    TabStripPlacement="Bottom" 
+                    DockPanel.Dock="Bottom" 
+                    SelectedIndex="{Binding TagsTabSelectedIndex, Mode=OneWayToSource}"
+                    ItemsSource="{Binding ResponseItemsTabs}"
+                    >
+            <TabControl.Resources>
+                <DataTemplate DataType="{x:Type utils:MyJToken}">
+                    <shared:JsonTreeViewControl DataContext="{Binding JToken}"/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type utils:MyObservableCollection}">
+                    <shared:TagsActionsControl DataContext="{Binding}"/>
+                </DataTemplate>
+            </TabControl.Resources>
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Key}"/>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <ContentControl Content="{Binding Value}"/>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+        </TabControl> 
+        <!--
+        <TabControl x:Name="tagsRequestResponseTabControl" TabStripPlacement="Bottom" DockPanel.Dock="Bottom" SelectedIndex="{Binding TagsTabSelectedIndex, Mode=OneWayToSource}">
+            <TabItem Header="Tags">
+                <shared:TagsActionsControl DataContext="{Binding FlattendTagsAndActions}"/>
+            </TabItem>
+            <TabItem Header="Response">
+                <shared:JsonTreeViewControl DataContext="{Binding SearchResponse.KapiResponseJson}"/>
+            </TabItem>
+            <TabItem Header="Request">
+                <shared:JsonTreeViewControl  DataContext="{Binding SearchResponse.KapiRequestJson}"/>
+            </TabItem>
+        </TabControl>
+        -->
+    </DockPanel>
+</UserControl>
+
+
+

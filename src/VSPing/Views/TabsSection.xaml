@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="VSPing.Views.TabsSection"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:shared="clr-namespace:VSPing.SharedViews"
+             mc:Ignorable="d" >
+    <!-- This view handles the rendering of the different search results given for any image, using ImageResultsListControl-->
+    <TabControl x:Name="sbi_spi_results" Grid.Column="0" TabStripPlacement="Bottom">
+        <TabItem Header="VisualSearch">
+            <shared:ImageResultsListControl DataContext="{Binding VisualSearchResults}"/>
+        </TabItem>
+        <TabItem Header="ProductSearch">
+            <shared:ImageResultsListControl DataContext="{Binding ProductSearchResults}"/>
+        </TabItem>
+        <TabItem Header="PagesIncluding">
+            <shared:ImageResultsListControl DataContext="{Binding PagesIncludingSearchResults}"/>
+        </TabItem>
+    </TabControl>
+</UserControl>
+
+
+

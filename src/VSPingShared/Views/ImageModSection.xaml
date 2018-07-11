@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="VSPing.SharedViews.ImageModSection"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="900">
+    <!-- This view is a dockpanel that consist of different sections where the image will be drag and drop-->
+    <DockPanel Grid.Row="1" LastChildFill="True">
+        <TextBlock FontSize="10" Text="Drag any image from browser (imgUris), local file explorer or in-app image lists to search against. Use slider on right to rotate image." DockPanel.Dock="Top" Background="Wheat"/>
+        <Slider x:Name="rotationSlider" 
+                            Orientation="Vertical" 
+                            DockPanel.Dock="Right" 
+                            Minimum="-180" Maximum="180" 
+                            Value="{Binding RotationSliderPosition, Mode=TwoWay}" 
+                            Thumb.DragCompleted="rotationSlider_Thumb_DragCompleted"
+                            LargeChange="45" SmallChange="10" 
+                            PreviewMouseLeftButtonDown="rotationSlider_MouseLeftButtonUp"/>
+        <ScrollViewer x:Name="scrollViewer"
+                                      DockPanel.Dock="Left"
+                                      HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible"                             
+                                      Background="Wheat"
+                                      DragEnter="ScrollViewer_DragEnterOver" DragOver="ScrollViewer_DragEnterOver" AllowDrop="True" Drop="ScrollViewer_Drop"
+                                      ToolTip="Drag any image from browser, file explorer, results list here">
+            <Canvas Height="{Binding ActualHeight, ElementName=scrollViewer}" Width="{Binding ActualWidth, ElementName=scrollViewer}"                                     
+                                    >
+                <Image VerticalAlignment="Top" HorizontalAlignment="Left"  x:Name="img" Grid.Row="0" Grid.Column="0" Source="{Binding RenderQueryImageUrl, TargetNullValue={x:Null}}"                    
+                                   Height ="{Binding ActualHeight, ElementName=scrollViewer, Mode=OneWay}"
+                                   MouseLeftButtonDown="img_MouseLeftButtonDown" 
+                                   MouseLeftButtonUp="img_MouseLeftButtonUp" 
+                                   MouseMove="img_MouseMove"                                   
+                                   SizeChanged="img_SizeChanged"/>
+                <!-- bounding box-->
+                <Rectangle x:Name="bb" 
+                                       Visibility="{Binding BBVisibility}" 
+                                       Canvas.Top="{Binding BB.Top}"
+                                       Canvas.Left="{Binding BB.Left}"
+                                       Width="{Binding BB.Width}"
+                                       Height="{Binding BB.Height}"
+                                       Stroke="Red"/>
+            </Canvas>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>
+
+
+

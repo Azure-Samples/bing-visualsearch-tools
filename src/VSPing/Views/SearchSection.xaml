@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="VSPing.Views.SearchSection"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="40" d:DesignWidth="900">
+    <!-- This view handles the URL of the searched image, as well as the actual search button-->
+    <Grid x:Name="queryGrid"  Grid.Row="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition MaxWidth="80"/>
+            <ColumnDefinition Width="85"/>
+            <ColumnDefinition MaxWidth="100"/>
+            <ColumnDefinition Width="105"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="50"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="ImageUrl:" />
+        <TextBox x:Name="ImageUrl" Text="{Binding QueryImageUrl, Mode=TwoWay}" Width="Auto" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="5"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Market:" ToolTip="Provide markets in form of xx-YY string"/>
+        <TextBox  x:Name="market"  Grid.Row="1" Grid.Column="1" Text="{Binding Market, Mode=TwoWay}" Width="Auto"/>
+        <TextBlock Grid.Row="1" Grid.Column="2" Text="Search in Site:" Margin="5,0,0,0" ToolTip="Provide domain name to limit results within the same"/>
+        <TextBox x:Name="siteFilter" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" Text="{Binding FilterSite, Mode=TwoWay}" Width="Auto" DockPanel.Dock="Top"/>
+        
+        <Button x:Name="SearchBtn" Grid.RowSpan="2" Grid.Column="6" Content="Search" Width="50" Click="SearchBtn_Click" IsEnabled="{Binding CanIssueSearch}" DockPanel.Dock="Right" HorizontalAlignment="Right" IsDefault="True" Margin="0,0,0,5"/>
+    </Grid>
+</UserControl>

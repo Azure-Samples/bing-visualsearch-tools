@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="VSPing.SharedViews.StatusBarControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:system="clr-namespace:System;assembly=System"
+             xmlns:mscorlib="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" >
+    <!-- This view handles different elements that are in the botton of the app, ie: latency, status-->
+    <UserControl.Resources>
+        <Style x:Key="myContextMenuClickHandlerStyle">
+            <EventSetter Event="MenuItem.Click" Handler="HyperlinkContextMenu_Copy"/>
+        </Style>
+        <Style x:Key="myCustomizedHyperLinkSkyle" TargetType="Hyperlink">
+            <Style.Resources>
+                <ContextMenu x:Key="hyperLinkStyleContextMenu">
+                    <MenuItem Header="Copy" Style="{StaticResource myContextMenuClickHandlerStyle}"/>
+                </ContextMenu>
+            </Style.Resources>
+            <Setter Property="ContextMenu" Value="{StaticResource hyperLinkStyleContextMenu}"/>
+            <EventSetter Event="RequestNavigate" Handler="Hyperlink_RequestNavigate"/>
+        </Style>
+    </UserControl.Resources>
+
+    <!--The status bar expects a list of objects and renders each using a stack panel. System.Uri objects are hyperlinked, others are not-->
+    <StatusBar DockPanel.Dock="Bottom" Height="20" ItemsSource="{Binding}">
+        <StatusBar.ItemsPanel>
+            <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal"/>
+            </ItemsPanelTemplate>
+        </StatusBar.ItemsPanel>
+        <StatusBar.Resources>
+            <DataTemplate DataType="{x:Type system:Uri}">
+                <TextBlock DataContext="{Binding}">
+                    <Hyperlink NavigateUri="{Binding}" Style="{StaticResource myCustomizedHyperLinkSkyle}">                                               
+                        <TextBlock Text="{Binding}"/>
+                    </Hyperlink>
+                 </TextBlock>
+            </DataTemplate>
+            <DataTemplate  DataType="{x:Type mscorlib:String}">
+                <TextBlock Text="{Binding Mode=OneWay}" MinWidth="70"/>
+            </DataTemplate>
+        </StatusBar.Resources>
+    </StatusBar>
+</UserControl>
