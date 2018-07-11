@@ -16,7 +16,7 @@
             <ToolBar>
                 <Button Click="TagsCopyButton_Click">
                     <Button.Content>
-                        <TextBlock Text="{Binding SelectedValue.Header, ElementName=tagsRequestResponseTabControl, StringFormat=Copy \{0\}}"/>
+                        <TextBlock Text="{Binding SelectedValue.Key, ElementName=tagsRequestResponseTabControl, StringFormat=Copy \{0\}}"/>
                     </Button.Content>
                 </Button>
             </ToolBar>
