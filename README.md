@@ -88,7 +88,7 @@ VSPing is built on the MVVM (model-view-viewmodel) pattern. This in order to all
 - Specify a website to take results from
 - Crop part of an image to search
 - Search a rotated version of an image
-- ![Search Section](SearchSection.png)
+- <img src="Images/SearchSection.png">
 
 ### Query Image Store Section (Load Images from Azure or Local)
 #### Main Views
@@ -97,7 +97,7 @@ VSPing is built on the MVVM (model-view-viewmodel) pattern. This in order to all
 - Load images from different image stores and easily search them with a double click or drag and drop
   - Currently supports images in a local folder and Azure blobs contained in your Azure account (see the App.config file).
   - The interface IImageInfo (VSPing/Models/QueryImageStore) can be used to add additional image stores to the view
-  - ![Image Store Section](ImageStoreSection.png)
+  - <img src="Images/ImageStoreSection.png">
 
 ### Result Section
 #### Main Views
@@ -111,7 +111,7 @@ VSPing is built on the MVVM (model-view-viewmodel) pattern. This in order to all
   - Provides a series of tags for the image
   - Each tag has its own associated actions
     - These allow for quick insights to be gleaned about the query image and facilitate follow up queries about items of interest detected in the image
-  - ![Tags](Tags.png)
+  - <img src="Images/Tags.png">
 ###### Response
   - A JSON tree view of the entire response returned by the API
 ###### Request
@@ -119,11 +119,11 @@ VSPing is built on the MVVM (model-view-viewmodel) pattern. This in order to all
 ##### Image Results Subsection
 ###### Visual Search
   - A list of images visually similar to the query image, with included information parsed from the response JSON
-  - ![Visual Search](VisualSearch.png)
+  - <img src="Images/VisualSearch.png">
 ###### Product Search
   - Only populated for images where products are detected, contains information about similar products and where they can be purchased
   - This makes it easy to use an image of a product to find its name and possible locations where it can be purchased
-  - ![Product Search](ProductSearch.png)
+  - <img src="Images/ProductSearch.png">
 ###### Pages Including
   - A list of web pages that also have a copy of the query image
 
@@ -165,7 +165,7 @@ VSPing is built on the MVVM (model-view-viewmodel) pattern. This in order to all
 - Run the executable from *.\bin\Release\netcoreapp2.0\<targetOS>\publish\VSPing.exe*
 
 ## Report Abuse
-To report abuse of the Microsoft Cognitive Services to Microsoft, please visit the Microsoft Cognitive Services website at https://www.microsoft.com/cognitive-services, and use the "Report Abuse" link at the bottom of the page to contact Microsoft.
+To report abuse of the Microsoft Cognitive Services to Microsoft, please visit the Microsoft Cognitive Services website atï¿½https://www.microsoft.com/cognitive-services, and use the "Report Abuse" link at the bottom of the page to contact Microsoft.
 
 ## Privacy Policy
-For more information about Microsoft privacy policies please see their privacy statement here: https://go.microsoft.com/fwlink/?LinkId=521839. 
+For more information about Microsoft privacy policies please see their privacy statement here:ï¿½https://go.microsoft.com/fwlink/?LinkId=521839. 
