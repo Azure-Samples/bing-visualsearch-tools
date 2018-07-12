@@ -176,9 +176,8 @@ VSPing is built on the MVVM (model-view-viewmodel) pattern. This in order to all
 ###### Pages Including
   - A list of web pages that also have a copy of the query image
 
-
 ## Report Abuse
-To report abuse of the Microsoft Cognitive Services to Microsoft, please visit the Microsoft Cognitive Services website at�https://www.microsoft.com/cognitive-services, and use the "Report Abuse" link at the bottom of the page to contact Microsoft.
+To report abuse of the Microsoft Cognitive Services to Microsoft, please visit the Microsoft Cognitive Services website at https://www.microsoft.com/cognitive-services, and use the "Report Abuse" link at the bottom of the page to contact Microsoft.
 
 ## Privacy Policy
-For more information about Microsoft privacy policies please see their privacy statement here:�https://go.microsoft.com/fwlink/?LinkId=521839. 
+For more information about Microsoft privacy policies please see their privacy statement here: https://go.microsoft.com/fwlink/?LinkId=521839. 
