@@ -80,15 +80,15 @@ Additional columns can also be included, and will be copied over to the output f
   - ```VSPingCmd.exe -i home/documents/queryimages.txt -o output.txt -t file -column URL```
   - The corresponding input text file could look something like this. 
 	 ```
-    INDEX  SOMECOLUMN      URL                      
-    1      foo             home/images/pic1.png     
-    2      bar             weburl.com/pic2.jpg      
+    INDEX	SOMECOLUMN	URL                 
+    1	foo	home/images/pic1.png
+    2	bar	weburl.com/pic2.jpg 
     ```
  - The corresponding output text file would look like this: 
     ```
-    INDEX  SOMECOLUMN      URL                      JSON 
-    1      foo             home/images/pic1.png     {...}
-    2      bar             weburl.com/pic2.jpg      {...}
+    INDEX   SOMECOLUMN  URL JSON 
+    1   foo  home/images/pic1.png   {...}
+    2   bar  weburl.com/pic2.jpg    {...}
     ```
 #### Folder
 Choose one local folder within which to search all images inside
