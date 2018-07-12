@@ -135,21 +135,28 @@ namespace VSPing.SharedViews
 
         private async void GetQueries_Click(object sender, RoutedEventArgs e) //This method populates the view with images from the query store in question
         {
-            this.queryListStatusBarItem.Text = "Loading ...";
-            this.getQueriesBtn.IsEnabled = false;
-
-            //obtain the store refresh params. Different stores may have different params
-            var propertyBag = GetQueryStoreRefreshParams();
-
             try
             {
+                this.getQueriesBtn.IsEnabled = false;
+                this.queryListStatusBarItem.Text = "Loading ...";
+
+                //obtain the store refresh params. Different stores may have different params
+                var propertyBag = GetQueryStoreRefreshParams();
+
+                //No refresh to perform. Note: a parameter-less refresh is expressed by an empty property bag.
+                if (propertyBag != null)
+                {
                     await VM.GetImagesFromStore(propertyBag);
-                    this.getQueriesBtn.IsEnabled = true;
-                    this.queryListStatusBarItem.Text = "Loaded";
+                }
+                
+                this.queryListStatusBarItem.Text = $"Loaded {this.queryListView.Items.Count} items";                    
             } catch (Exception)
+            {                
+                this.queryListStatusBarItem.Text = "Error (Check App.Config)";
+            }
+            finally
             {
                 this.getQueriesBtn.IsEnabled = true;
-                this.queryListStatusBarItem.Text = "Error (Check App.Config)";
             }
             
         }

@@ -79,6 +79,10 @@ namespace VSPing.Views
                     }
                 }
             }          
+            else if(isvm.Name == "Azure")
+            {
+                storeRefreshPropertyBag = new Dictionary<string, object>(); //no parameters for Azure store
+            }
             e.ReturnValue = storeRefreshPropertyBag;
         }
     }
