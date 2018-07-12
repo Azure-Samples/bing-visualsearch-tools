@@ -254,7 +254,8 @@ namespace VSPingCmd
         {
                 this.sr = new StreamReader(fileStream);
                 this.delimiter = delimiter;
-                this.HeaderColumns = new List<string>(sr.ReadLine().Split(this.delimiter)) { string.Join(delimiter, map.Keys) }.ToArray();// Adds on additional header columns to the ones already in the file
+                var Headers = sr.ReadLine().Split(this.delimiter);
+                this.HeaderColumns = new List<string>(Headers) { string.Join(delimiter, map.Keys) }.ToArray();// Adds on additional header columns to the ones already in the file
                 this.Rows = this.GetRowsFromFile();
                 this.URLColumn = URLColumn;
                 this.ImageColumnIndex = GetIndex();
@@ -267,7 +268,7 @@ namespace VSPingCmd
             int i = 0;
             foreach (string entry in this.HeaderColumns) // Checks each column of the header for the one with the URL
             {
-                if (entry == URLColumn) // Reads the URL from the column specifed by the user to contain comments
+                if (entry.Trim() == URLColumn) // Reads the URL from the column specifed by the user to contain comments
                 {
                     return i;
                 }
