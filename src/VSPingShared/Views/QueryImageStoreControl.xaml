@@ -1,0 +1,83 @@
+﻿<UserControl x:Class="VSPing.SharedViews.QueryImageStoreControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <!--This view is a general template for every query image store to use-->
+    <Grid x:Name="queryImagesStackPanel"  Grid.Column="0" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <ToolBarTray Grid.Row="0">
+            <ToolBar>
+                <Button x:Name="getQueriesBtn"  Content="Load" Click="GetQueries_Click" VerticalAlignment="Center" ToolTip="Load Images"/>
+                <Button x:Name="copyQueryUrlLocations"  Content="Copy Urls" Click="copyQueryUrlLocations_Click" VerticalAlignment="Center" Margin="5,0,0,0" ToolTip="Copy Query URls to Clipboard"/>
+            </ToolBar>
+        </ToolBarTray>
+        <ListView x:Name="queryListView"
+                      ItemsSource="{Binding QueryImages}"
+                      Grid.Row="1"                      
+                      GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler" 
+                      MouseDoubleClick="queryListView_MouseDoubleClick"
+                      SelectedItem="{Binding QueryImagesListSelectedItem, Mode=TwoWay}"
+                      SelectionChanged="queryListView_SelectionChanged"
+                      >
+            <ListView.Resources>
+                <ContextMenu x:Key="queryListViewContextMenu"  ItemsSource="{Binding MenuItemNameCommands}">
+                    <ContextMenu.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Item1}"/>
+                        </DataTemplate>
+                    </ContextMenu.ItemTemplate>
+                    <ContextMenu.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <Setter Property="CommandParameter" Value="{Binding Item1}"/>
+                            <Setter Property="Command" Value="{Binding Item2}"/>
+                        </Style>
+                    </ContextMenu.ItemContainerStyle>
+                </ContextMenu>
+            </ListView.Resources>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="ContextMenu" Value="{StaticResource queryListViewContextMenu}"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Image">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Height="50" Source="{Binding Url}" MouseMove="QueryTags_MoveMouse" MouseEnter="QueryListView_ImagePopupOn" MouseLeave="QueryListView_ImagePopupOff"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>                    
+                    <GridViewColumn Header="#" Width="40" DisplayMemberBinding="{Binding Index}"/>
+                    <GridViewColumn Header="Tags" Width="125" >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding TagsList}" TextWrapping="Wrap" Height="50" MouseMove="QueryTags_MoveMouse"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Time" Width="100" DisplayMemberBinding="{Binding LastModified}"/>
+                    <GridViewColumn Header="Hash" Width="75" DisplayMemberBinding="{Binding ImageHash}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <StatusBar Grid.Row="2">
+            <StatusBarItem >
+                <TextBlock x:Name="queryListStatusBarItem"/>
+            </StatusBarItem>
+        </StatusBar>
+        <Popup x:Name="listViewPopup" IsOpen="False" Height="160" HorizontalOffset="5" VerticalOffset="-20">
+            <Border BorderThickness="2" BorderBrush="White">
+                <Image Source="{Binding Url}"/>
+            </Border>
+        </Popup>
+    </Grid>
+</UserControl>

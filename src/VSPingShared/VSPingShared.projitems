@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>30d7d2e4-6285-4fb5-953c-5ea324654410</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>VSPingShared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Models\AppModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ImageEdits.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\KapiSearch.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\KapiTypes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\QueryImageStore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Search.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\SearchModels.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Helpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ActionViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\AppViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ImageInfoViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\QueryImageStoreViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\JsonConverters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\RelayCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SearchResultViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\TagViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\StatusBarControl.xaml.cs">
+      <DependentUpon>StatusBarControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\CustomHyperLinkControl.xaml.cs">
+      <DependentUpon>CustomHyperLinkControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\ImageModSection.xaml.cs">
+      <DependentUpon>ImageModSection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\ImageResultsListControl.xaml.cs">
+      <DependentUpon>ImageResultsListControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\QueryImageStoreControl.xaml.cs">
+      <DependentUpon>QueryImageStoreControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\JsonTreeViewControl.xaml.cs">
+      <DependentUpon>JsonTreeViewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\TagsActionsControl.xaml.cs">
+      <DependentUpon>TagsActionsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\TagsOutputSection.xaml.cs">
+      <DependentUpon>TagsOutputSection.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)Views\StatusBarControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\CustomHyperLinkControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\ImageModSection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\ImageResultsListControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\QueryImageStoreControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\JsonTreeViewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\TagsActionsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\TagsOutputSection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,73 @@
+﻿<Window x:Class="VSPing.Views.DockableWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        xmlns:local="clr-namespace:VSPing.ViewModels"
+        xmlns:localview="clr-namespace:VSPing.Views"
+        xmlns:shared="clr-namespace:VSPing.SharedViews"
+        mc:Ignorable="d"
+        Title="VSPing" Height="1024" Width="1280" 
+        Activated="Window_Activated">
+    <!-- This view creates the backdrop upon which other windows are placed, namely BingSearchUserControl and ImageStoreControl-->
+    <Window.Resources>
+        <local:AppViewModel x:Key="myAppViewModel"/>
+        <xcad:AeroTheme x:Key="avalonDockTheme"/>
+        <xcad:VS2010Theme x:Key="vs2010Theme"/>
+        <xcad:MetroTheme x:Key="metroTheme"/>
+    </Window.Resources>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_New QueryWindow" Click="NewQueryWindowMenuItem_Click"/>
+                <Separator/>
+                <MenuItem Header="E_xit" Click="ExitMenuItem_Click"/>
+            </MenuItem>
+        </Menu>
+        <xcad:DockingManager x:Name="dockingManager"                    
+                    AllowMixedOrientation="True"
+                    Theme="{Binding Source={StaticResource avalonDockTheme}}"                   
+                    DocumentsSource="{Binding QueryWindows}"    
+                    AnchorablesSource="{Binding QueryStores}"   
+                    ActiveContentChanged="DockingManager_ActiveContentChanged"
+                    DocumentClosed="DockingManager_DocumentClosed"> <!--Creates a new ImageStoreControl tab for every query store in the view model -->
+            <xcad:DockingManager.Resources>
+                <DataTemplate DataType="{x:Type local:MainWindowViewModel}">
+                    <localview:BingSearchUserControl DataContext="{Binding}"/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type local:QueryImageStoreViewModel}">
+                    <shared:QueryImageStoreControl 
+                        DataContext="{Binding}"
+                        QueryDoubleClick="QueryImageStoreControl_QueryDoubleClick"
+                        LoadQueryListClick="QueryImageStoreControl_LoadQueryListClick"
+                    />
+                </DataTemplate>
+            </xcad:DockingManager.Resources>
+            <xcad:DockingManager.DocumentHeaderTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Title}"/>
+                </DataTemplate>
+            </xcad:DockingManager.DocumentHeaderTemplate>
+            <xcad:DockingManager.AnchorableHeaderTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Title}"/> <!-- Titles each ImageStoreControl window with the name of the QueryStore -->
+                </DataTemplate>
+            </xcad:DockingManager.AnchorableHeaderTemplate>
+            <xcad:DockingManager.LayoutItemContainerStyle>
+                <Style TargetType="{x:Type xcad:LayoutItem}">
+                    <Setter Property="CanClose" Value="True"/>
+                    <Setter Property="Title" Value="{Binding Model.Name}"/>
+                </Style>
+            </xcad:DockingManager.LayoutItemContainerStyle>
+            <xcad:LayoutRoot x:Name="_layoutRoot">
+                <xcad:LayoutPanel Orientation="Horizontal">
+                    <xcad:LayoutAnchorablePane DockWidth="400" FloatingWidth="400" >
+                    </xcad:LayoutAnchorablePane>
+                    <xcad:LayoutDocumentPane x:Name="queryWindowDocumentPane">
+                    </xcad:LayoutDocumentPane>
+                </xcad:LayoutPanel>
+            </xcad:LayoutRoot>
+        </xcad:DockingManager>
+    </DockPanel>
+</Window>
