@@ -1,8 +1,8 @@
 # Table of Contents
-- [Getting Started With VSPingCmd](##Getting-Started-with-VSPingCMD)
-- [Getting Started With VSPing](##Getting-Started-with-VSPing)
-- [VSPingCmd Features](##VSPingCmd-Features)
-- [VSPing Features](##VSPing-Features)
+- [Getting Started With VSPingCmd](#getting-started-with-vspingcmd)
+- [Getting Started With VSPing](#getting-started-with-vsping)
+- [VSPingCmd Features](#vspingcmd-features)
+- [VSPing Features](#vsping-features)
 # VSPing & VSPingCmd
 
 VSPing and VSPingCmd are applications to show off the possibilities of the Bing Image Search API, and to serve as demo/debug tools for projects that use the API.
