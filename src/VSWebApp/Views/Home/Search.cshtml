@@ -1,0 +1,266 @@
+﻿<!-- Html of search page-->
+<div ng-app="myVSPingApp">
+    <div ng-controller="myController">
+        <h1 class="title">Bing Visual Search Web Page</h1>
+        <a target="_blank" rel="noopener noreferrer" href="https://azure.microsoft.com/en-us/services/cognitive-services/bing-visual-search/">
+            <h5 class="cogntivelink">MICROSOFT COGNITIVE SERVICES: BING VISUAL SEARCH</h5>
+        </a>
+
+        <!-- Input section: Insert Uri, Markket, Domain-->
+        <div class="dividescreen">
+                <form>
+                    <div>
+                        <input class="sizeUri" type="text" ng-model="url" placeholder="Insert URI...">
+                        <select class="sizeMarket" name="where" ng-model="market">
+                            <option value="es-AR">Argentina (Spanish)</option>
+                            <option value="en-AU">Australia (English)</option>
+                            <option value="de-AT">Austria (German)</option>
+                            <option value="nl-BE">Belgium (Dutch)</option>
+                            <option value="fr-BE">Belgium (French)</option>
+                            <option value="pt-BR">Brazil (Portuguese)</option>
+                            <option value="en-CA">Canada (English)</option>
+                            <option value="fr-CA">Canada (French)</option>
+                            <option value="es-CL">Chile (Spanish)</option>
+                            <option value="da-DK">Denmark (Danish)</option>
+                            <option value="fi-FI">Finland (Finnish)</option>
+                            <option value="fr-FR">France (French)</option>
+                            <option value="de-DE">Germany (German)</option>
+                            <option value="zh-HK">Hong Kong (Traditional Chinese)</option>
+                            <option value="en-IN">India (English)</option>
+                            <option value="en-ID">Indonesia (English)</option>
+                            <option value="it-IT">Italy (Italian)</option>
+                            <option value="ja-JP">Japan (Japanese)</option>
+                            <option value="ko-KR">Korea (Korean)</option>
+                            <option value="en-MY">Malaysia (English)</option>
+                            <option value="es-MX">Mexico (Spanish)</option>
+                            <option value="nl-NL">Netherlands (Dutch)</option>
+                            <option value="en-NZ">New Zealand (English)</option>
+                            <option value="no-NO">Norway (Norwegian)</option>
+                            <option value="zh-CN">People's Republic of China (Chinese)</option>
+                            <option value="pl-PL">Poland (Polish)</option>
+                            <option value="pt-PT">Portugal (Portuguese)</option>
+                            <option value="en-PH">Philippines (English)</option>
+                            <option value="ru-RU">Russia (Russian)</option>
+                            <option value="ar-SA">Saudi Arabia (Arabic)</option>
+                            <option value="en-ZA">South Africa (English)</option>
+                            <option value="es-ES">Spain (Spanish)</option>
+                            <option value="sv-SE">Sweden (Swedish)</option>
+                            <option value="fr-CH">Switzerland (French)</option>
+                            <option value="de-CH">Switzerland (German)</option>
+                            <option value="zh-TW">Taiwan (Traditional Chinese)</option>
+                            <option value="tr-TR">Turkey (Turkish)</option>
+                            <option value="en-GB">United Kingdom (English)</option>
+                            <option value="en-US" selected>United States (English)</option>
+                            <option value="es-US">United States (Spanish)</option>
+                        </select>
+                        <input class="sizeElse" type="text" ng-model="site" placeholder="Search Site...">
+                        <button type="button" class="generalButton" ng-click="searchFromUrl(url);">Search</button>
+                    </div>
+                    <input type="file" id="uploadImage" class="btn btn-secondary btn-lg paddingbutton" custom-on-change="searchFromImg" onchange="handleFileSelect('uploadImage')" />
+                    <div ng-bind="msg"></div>
+                </form>
+        </div>
+        <!-- Display Json -->
+        <div class="form-check" ng-show="response != null">
+            <label class="displaycss">
+                <input type="checkbox" class="check" id="jsonCheckBox" ng-model="showJSONChecked">Display JSON
+            </label>
+        </div>
+        <div id="ResponseInfo" ng-show="!showJSONChecked && response != null">
+            <div class="dividescreen" id="TablesAndTags">
+                <!-- Show actual search image -->
+                <div>
+                    <table class="queryImgTable">
+                        <thead>
+                            <tr>
+                                <td>
+                                    <h1>Query Image</h1>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td ng-if="!url || url == ''">
+                                    <output class="actualImage" id="thumbnail"></output>
+                                </td>
+                                <td ng-if="url && url != ''">
+                                    <img class="actualImage" ng-src="{{this.url}}">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Table of Visual Search/Product Search and Pages Including -->
+                <div>
+                    <table class="mainTable">
+                        <thead>
+                            <tr>
+                                <td>
+                                    <h1>{{this.activeTable}}</h1>
+                                </td>
+                                <td>
+                                    <!-- Buttons: Radio Buttons -->
+                                    <div id="RadioButtons">
+                                        <form>
+                                            <input type="radio" name="choice" checked ng-click="this.activeTable = 'VisualSearch'">Visual Search
+                                            <input type="radio" name="choice" ng-click="this.activeTable = 'ProductVisualSearch'">Product Search
+                                            <input type="radio" name="choice" ng-click="this.activeTable = 'PagesIncluding'">Pages Including
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <h3>Image</h3>
+                                </th>
+                                <th>
+                                    <h3>Information</h3>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="scrollbar">
+                            <tr ng-repeat="r in getVisualSearchResults(this.activeTable)">
+                                <td>
+                                    <a target="_blank" rel="noopener noreferrer" href="{{r.contentUrl}}">
+                                        <center>
+                                            <img class="vspingthumbnail" ng-src="{{r.thumbnailUrl}}" />
+                                        </center>
+                                    </a>
+                                </td>
+                                <td>
+                                    <table class="imageInfoTable">
+                                        <tr>
+                                            <td class="limitsize">
+                                                Page Title: {{r.name}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="limitsize">
+                                                Image URI:
+                                                <a target="_blank" rel="noopener noreferrer" href="{{r.contentUrl}}">{{r.contentUrl}}</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="limitsize">
+                                                Page URI:
+                                                <a target="_blank" rel="noopener noreferrer" href="{{r.hostPageUrl}}">{{r.hostPageUrl}}</a>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="r.insightsMetadata.aggregateOffer.name != null">
+                                            <td>
+                                                Best Offer:
+                                                {{r.insightsMetadata.aggregateOffer.name}}
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="r.insightsMetadata.aggregateOffer.lowPrice != null">
+                                            <td>
+                                                Offer Price:
+                                                {{r.insightsMetadata.aggregateOffer.lowPrice}} {{r.insightsMetadata.aggregateOffer.priceCurrency}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <button type="button" class="generalButton" ng-click="searchFromUrl(r.contentUrl);">Search This Image</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Table of Tags -->
+                <div>
+                    <table class="tagTable">
+                        <thead>
+                            <tr>
+                                <td>
+                                    <h1>Tags</h1>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="tagheader">
+                                    <h3>Image</h3>
+                                </th>
+                                <th class="tagheader">
+                                    <h3>Information</h3>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="scrollbar">
+                            <tr class="bodertagSection" ng-repeat="tag in response.tags.slice(1)" class="tagRow">
+                                <!-- <div> -->
+                                <td>
+                                    <figure class="sizefigure">
+                                        <a target="_blank" rel="noopener noreferrer" href="{{tag.image.thumbnailUrl}}" ng-if="tag.image.thumbnailUrl != null">
+                                            <img class="vspingtag" ng-src="{{tag.image.thumbnailUrl}}" />
+                                        </a>
+                                        <figcaption>{{tag.displayName}}</figcaption>
+                                    </figure>
+                                    <p></p>
+                                </td>
+                                <td>
+                                    <table class="table4">
+                                        <tr class="trinfo" ng-repeat="action in tag.actions">
+                                            <td>
+                                                <div class="limitsizeTags" ng-if="action.actionType == 'Uri'">
+                                                    <a target="_blank" rel="noopener noreferrer" href="{{action.url}}">
+                                                        {{action.url | decodeURI }}
+                                                    </a>
+                                                </div>
+                                                <div class="limitsizeTags"ng-if="action.actionType == 'TextResults'">
+                                                    {{action.displayName}}
+                                                </div>
+                                                <div class="limitsizeTags" ng-if="action.actionType == 'Entity'">
+                                                    Entity Detected: <a target="_blank" rel="noopener noreferrer" href="{{action.webSearchUrl}}">
+                                                        {{action.displayName}}
+                                                    </a>
+                                                </div>
+                                                <div class="limitsizeTags" ng-if="action.actionType == 'ImageResults'">
+                                                    <a target="_blank" rel="noopener noreferrer" href="{{action.webSearchUrl}}">
+                                                        Image Search This Tag
+                                                    </a>
+                                                </div>
+                                                <div class="limitsizeTags"ng-if="action.actionType == 'Trivia'">
+                                                    Triva: {{action.data.value.length}} Available
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <button class="generalButton" ng-if="tag.image.thumbnailUrl != null" ng-click="searchFromUrl(tag.image.thumbnailUrl);">Search This Image</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <!-- </div> -->
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Table of the JSON -->
+        <div id="JSON" ng-show="showJSONChecked">
+            <table class="JSONTable">
+                <thead>
+                    <tr>
+                        <td>
+                            <h1>
+                                JSON Response
+                                <button type="button" class="generalButton" ng-click="copyToClipboard();">Copy JSON</button>
+                            </h1>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody class="scrollbar2">
+                    <tr>
+                        <td>
+                            <pre>{{this.parsedJson}}</pre>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

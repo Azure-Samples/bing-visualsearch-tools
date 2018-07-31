@@ -1,0 +1,235 @@
+﻿/*All the css that we use in the html pf "Search"*/
+.body {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+table {
+    table-layout: fixed;
+    background: #eaebec;
+    border: none;
+}
+
+th {
+    padding: 10px 150px 0px 40px;
+    text-align: center;
+}
+
+.tagheader {
+    padding: 10px 10px 0px 60px;
+}
+
+figcaption {
+    text-align: center;
+    font-weight: bold;
+    display: block;
+    max-width: 18em;
+    font-size: small;
+}
+
+.paddingbutton {
+    padding: 0.5rem 0rem 0.5rem 0rem;
+}
+
+tr {
+    border: none;
+    word-wrap: break-word;
+    border-collapse: collapse;
+}
+
+.displaycss {
+    padding: 0px 15px 0px 5px;
+}
+
+thead {
+    display: block;
+    text-align: left;
+    padding: 2px 3px;
+}
+
+h1 {
+    padding: 1rem;
+    margin: 0px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #087;
+}
+
+h3 {
+    margin: 0px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #087;
+}
+
+tableheader {
+    border-collapse: collapse;
+    table-layout: fixed;
+    word-wrap: break-word;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #666;
+    font-size: 12px;
+    text-shadow: 1px 1px 0px #fff;
+    background: #eaebec;
+    border: none;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -moz-box-shadow: 0 1px 2px #d1d1d1;
+    -webkit-box-shadow: 0 1px 2px #d1d1d1;
+    box-shadow: 0 1px 2px #d1d1d1;
+}
+
+.dividescreen {
+    display: flex;
+    width: 100%;
+}
+
+.trinfo {
+    word-wrap:break-word;
+    max-width: 50%;
+}
+
+.vspingthumbnail {
+    max-height: 13rem;
+    width: 15rem;
+    padding: 2px 0.5px;
+    object-fit: contain;
+    margin-left: 1rem;
+}
+
+.vspingtag {
+    max-height: 13rem;
+    width: 15rem;
+    margin-left: 2rem;
+    object-fit: contain;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.generalButton {
+    width: auto;
+    height: 2.7rem;
+    font-size: 17px;
+    margin: 3px 2px;
+    color: #000000;
+}
+
+.scrollbar {
+    display: block;
+    overflow: auto;
+    max-height: 70rem;
+    height: auto;
+    white-space: nowrap;
+    overflow-x: hidden;
+    width: auto;
+}
+
+.sizefigure {
+    max-width: 20rem;
+    margin-right: 1rem;
+}
+
+.scrollbar2 {
+    display: block;
+    overflow: auto;
+    max-width: 200rem;
+    padding: 0px 1rem;
+    max-height: 68rem;
+    height: auto;
+    white-space: nowrap;
+}
+
+.mainTable {
+    margin: 0.5rem;
+    width: 70rem;
+    max-height: 71rem;
+    height: auto;
+}
+
+.tagTable {
+    margin: 0.5rem;
+    max-width: 50rem;
+    max-height: 71rem;
+    height: auto;
+    width: auto;
+}
+
+.tagRow {
+    border-bottom: 10rem;
+    border-bottom-color: black;
+}
+
+.JSONTable {
+    margin: 0.5rem;
+    width: 172rem;
+    max-height: 69rem;
+}
+
+.imageInfoTable {
+    margin: 0.5rem;
+    max-height: 10rem;
+    height: auto;
+    width: 45rem;
+}
+
+.limitsize {
+    white-space: nowrap;
+    width: 52rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.limitsizeTags {
+    white-space: nowrap;
+    max-width: 20rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+}
+
+.bodertagSection {
+    border-bottom: solid;
+    border-width: 1px;
+    height: auto;
+
+}
+
+
+.title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #087;
+}
+
+
+.sizeUri{
+    width: 50rem;
+}
+
+.sizeElse {
+    width: 18rem;
+    height: 2.6rem;
+}
+.sizeMarket {
+    width: 30rem;
+    height: 2.6rem;
+    font-size: 18px;
+}
+
+.queryImgTable {
+    margin: 0.5rem;
+    width: 54rem;
+    max-height: 71rem;
+    height: auto;
+
+
+}
+
+.actualImage {
+    margin: 0.3rem;
+    width: 50rem;
+    height: auto;
+    object-fit: contain;
+    margin: 0.5rem 1rem;
+}
