@@ -78,7 +78,7 @@ namespace VSPing.Views
                         storeRefreshPropertyBag.Add("filePath", ofd.FileName);
                     }
                 }
-            }          
+            } 
             else if(isvm.Name == "Azure")
             {
                 storeRefreshPropertyBag = new Dictionary<string, object>(); //no parameters for Azure store

@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vspingvm="clr-namespace:VSPing.ViewModels"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"             
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="900">
     <!-- This view is a dockpanel that consist of different sections where the image will be drag and drop-->
@@ -22,23 +24,51 @@
                                       Background="Wheat"
                                       DragEnter="ScrollViewer_DragEnterOver" DragOver="ScrollViewer_DragEnterOver" AllowDrop="True" Drop="ScrollViewer_Drop"
                                       ToolTip="Drag any image from browser, file explorer, results list here">
-            <Canvas Height="{Binding ActualHeight, ElementName=scrollViewer}" Width="{Binding ActualWidth, ElementName=scrollViewer}"                                     
-                                    >
-                <Image VerticalAlignment="Top" HorizontalAlignment="Left"  x:Name="img" Grid.Row="0" Grid.Column="0" Source="{Binding RenderQueryImageUrl, TargetNullValue={x:Null}}"                    
+            <!-- ItemsControl holds the query image, query bounding box and tags' bounding box. We use viewmodel.CanvasItems to show these items-->
+            <ItemsControl ItemsSource="{Binding CanvasItems}">
+                <ItemsControl.Resources>
+                    <DataTemplate DataType="{x:Type system:String}">
+                        <Image VerticalAlignment="Top" HorizontalAlignment="Left"  x:Name="img" Grid.Row="0" Grid.Column="0" Source="{Binding TargetNullValue={x:Null}}"                    
                                    Height ="{Binding ActualHeight, ElementName=scrollViewer, Mode=OneWay}"
                                    MouseLeftButtonDown="img_MouseLeftButtonDown" 
                                    MouseLeftButtonUp="img_MouseLeftButtonUp" 
                                    MouseMove="img_MouseMove"                                   
                                    SizeChanged="img_SizeChanged"/>
-                <!-- bounding box-->
-                <Rectangle x:Name="bb" 
-                                       Visibility="{Binding BBVisibility}" 
-                                       Canvas.Top="{Binding BB.Top}"
-                                       Canvas.Left="{Binding BB.Left}"
-                                       Width="{Binding BB.Width}"
-                                       Height="{Binding BB.Height}"
-                                       Stroke="Red"/>
-            </Canvas>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vspingvm:QueryBoundingBox}">
+                        <Rectangle                                                                                 
+                                           Width="{Binding Width}"
+                                           Height="{Binding Height}"
+                                           Stroke="Red"
+                                           StrokeThickness="2"/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vspingvm:TagsBoundingBox}">
+                        <StackPanel Orientation="Vertical">
+                            <Rectangle                                                                                 
+                                           Width="{Binding Width}"
+                                           Height="{Binding Height}"
+                                           Stroke="Green"
+                                           StrokeThickness="2" 
+                                           HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            <TextBlock Text="{Binding Name}" 
+                                       FontWeight="Bold" FontSize="12" 
+                                       Foreground="Green" 
+                                       HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.Resources>
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ContentPresenter">
+                        <Setter Property="Canvas.Left" Value="{Binding X}"/>
+                        <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas Height="{Binding ActualHeight, ElementName=scrollViewer}" Width="{Binding ActualWidth, ElementName=scrollViewer}"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
         </ScrollViewer>
     </DockPanel>
 </UserControl>

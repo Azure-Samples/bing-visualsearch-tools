@@ -215,7 +215,9 @@ namespace VSPing.Models
         /// </summary>
         string Name { get; set; }
         List<ImageInfo> Images { get; set; }
-        Task Refresh(Dictionary<string, object> refreshParams);
+        Task Refresh(Dictionary<string, object> refreshParams);    
+        Task<ImageInfo> GetImage(string url);
+
     }
     public class FileImageStore : IImageStore
     {
@@ -263,6 +265,11 @@ namespace VSPing.Models
             this.Images = images;
 
         }
+
+        public Task<ImageInfo> GetImage(string url)
+        {
+            return Task.FromResult<ImageInfo>(null);
+        }
     }
     public class AzureImageStore : IImageStore
     {
@@ -271,31 +278,37 @@ namespace VSPing.Models
         /// </summary>
         public string Name { get; set; }
         public List<ImageInfo> Images { get; set; }
-        private List<CloudBlobContainer> Containers { get; set; }
-        private List<IListBlobItem> Blobs { get; set; }
+        private CloudBlobContainer Container { get; set; }
+      
 
         public AzureImageStore() // Constructor for the AzureImageStore
         {
-            this.Name = "Azure";
-            this.Blobs = new List<IListBlobItem>();
+            this.Name = "Azure";            
             this.Images = new List<ImageInfo>();
 
             try
             {
-                var automaticContainer = new CloudBlobContainer(new Uri(@System.Configuration.ConfigurationManager.AppSettings["azureContainerSASUrlEscaped"]));
-                this.Containers = new List<CloudBlobContainer>() { automaticContainer };
+                string azContainerUrl = System.Configuration.ConfigurationManager.AppSettings["azureContainerSASUrlEscaped"];
+                var container = new CloudBlobContainer(new Uri(azContainerUrl));        
+                this.Container = container;                
+
             } catch (Exception)
             {
             }
         }
         public async Task Refresh(Dictionary<string, object> refreshParams = null) // Populates the image store with images from Azure
         {
-            BlobContinuationToken continuationToken = null;
-            this.Blobs.Clear();
+            //could connect to the container so return as we have nothing to refresh.
+            if (this.Container == null)
+                return;
 
+            BlobContinuationToken continuationToken = null;
+
+            List<IListBlobItem> blobs = new List<IListBlobItem>();
+             
             do
             {
-                var response = await this.Containers[0].ListBlobsSegmentedAsync(
+                var response = await this.Container.ListBlobsSegmentedAsync(
                                                 "",
                                                 useFlatBlobListing: true,
                                                 blobListingDetails: BlobListingDetails.Metadata,
@@ -312,11 +325,11 @@ namespace VSPing.Models
                         orderby blob.Properties.LastModified descending
                         select blob;
 
-                this.Blobs.AddRange(q);
+                blobs.AddRange(q);
 
             } while (continuationToken != null);
 
-            this.Images = (from b in this.Blobs
+            this.Images = (from b in blobs
                            let lastModified = (b as ICloudBlob).Properties.LastModified?.LocalDateTime
                            orderby lastModified descending
                            select (ImageInfo)(new AzureBlobImageInfo()
@@ -325,11 +338,61 @@ namespace VSPing.Models
                                Url = b.Uri.ToString(),
                                LastModified = lastModified?.ToString("s") ?? string.Empty,
                                Blob = b as ICloudBlob,
-                               Container = this.Containers[0]
+                               Container = this.Container
                            })).ToList();
         }
 
-        public ImageInfo ContainsUrl(string url, bool strict = false) // Checks if any images in the store come from the passed url
+
+        public Task<ImageInfo> GetImage(string url)
+        {
+            if(this.Container == null)
+                return Task.FromResult<ImageInfo>(null);
+
+            var matchingImages = from i in this.Images
+                                 where string.Equals(i.Url, url, StringComparison.OrdinalIgnoreCase) == true
+                                 select i;
+
+
+            var ii = matchingImages.FirstOrDefault();
+
+            if (ii != null)
+                return Task.FromResult<ImageInfo>(ii);
+
+
+            if(!Uri.TryCreate(url, UriKind.Absolute, out Uri inUri))    //handle malformed Url
+                return Task.FromResult<ImageInfo>(null);
+
+            var blobName = string.Join(String.Empty, inUri.Segments.Skip(2)); //skip "/" (root),"containername/" segments and treat everything else as blob name;
+
+            //search for a blob with his Url
+            var blob = this.Container.GetBlockBlobReference(blobName);
+
+
+            try
+            {
+                blob.FetchAttributes();
+                
+            }catch(Exception)
+            {
+                return Task.FromResult<ImageInfo>(null);
+            }
+
+            //blob found, create an ImageInfo and return it.
+            ii = (ImageInfo)(new AzureBlobImageInfo()
+            {
+                Name = blob.Uri.Segments[blob.Uri.Segments.Length - 1],
+                Url = blob.Uri.ToString(),
+                LastModified = (blob as ICloudBlob).Properties.LastModified?.LocalDateTime.ToString("s") ?? string.Empty,
+                Blob = blob as ICloudBlob,
+                Container = this.Container
+            });
+
+            this.Images.Add(ii);
+
+            return Task.FromResult<ImageInfo>(ii);
+        }
+
+       public ImageInfo ContainsUrl(string url, bool strict = false) // Checks if any images in the store come from the passed url
         {
             Uri inUri = null;
 

@@ -40,13 +40,13 @@
                         </Style>
                     </ContextMenu.ItemContainerStyle>
                 </ContextMenu>
+                
             </ListView.Resources>
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="ContextMenu" Value="{StaticResource queryListViewContextMenu}"/>
                 </Style>
             </ListView.ItemContainerStyle>
-
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Image">
@@ -57,10 +57,10 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>                    
                     <GridViewColumn Header="#" Width="40" DisplayMemberBinding="{Binding Index}"/>
-                    <GridViewColumn Header="Tags" Width="125" >
+                    <GridViewColumn Header="Tags" Width="125">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding TagsList}" TextWrapping="Wrap" Height="50" MouseMove="QueryTags_MoveMouse"/>
+                                <TextBlock Text="{Binding TagsList}" TextWrapping="Wrap" Height="50"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -74,7 +74,7 @@
                 <TextBlock x:Name="queryListStatusBarItem"/>
             </StatusBarItem>
         </StatusBar>
-        <Popup x:Name="listViewPopup" IsOpen="False" Height="160" HorizontalOffset="5" VerticalOffset="-20">
+        <Popup x:Name="listViewPopup" IsOpen="False" Height="200" HorizontalOffset="5" VerticalOffset="-20">
             <Border BorderThickness="2" BorderBrush="White">
                 <Image Source="{Binding Url}"/>
             </Border>

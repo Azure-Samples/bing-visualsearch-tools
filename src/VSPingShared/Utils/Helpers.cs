@@ -69,42 +69,15 @@ namespace VSPing.Utils
         }
     }
 
+    //making a non generic class so that we can reference this as DataType in XAML as XAML doesn't support DataType names to be generic collection names
     public class MyObservableCollection : System.Collections.ObjectModel.ObservableCollection<object>
-    {}
+    { }
 
+
+    //making a container class so that we can reference this as DataType in XAML without incurring recursion (JToken can contain other JTokens)
     public class MyJToken
     {
         public Newtonsoft.Json.Linq.JToken JToken { get; set; }
-    }
-
-    public static class StringUtils
-    {
-        public static string ToXmlEscapedString(this string inString)
-        {
-            if (string.IsNullOrWhiteSpace(inString))
-                return inString;
-
-            return 
-                inString.Replace("\"", "&quot;")
-                    .Replace("'", "&apos;")
-                    .Replace("<", "&lt;")
-                    .Replace(">", "&gt;")
-                    .Replace("&", "&amp;");   
-        }
-
-        public static string ToXmlUnescapedString(this string inString)
-        {
-            if (string.IsNullOrWhiteSpace(inString))
-                return inString;
-
-            return
-                inString.Replace("&quot;", "\"")
-                    .Replace("&apos;", "'")
-                    .Replace("&lt;", "<")
-                    .Replace("&gt;", "<")
-                    .Replace("&amp;", "&");
-        }
-
     }
 
 }

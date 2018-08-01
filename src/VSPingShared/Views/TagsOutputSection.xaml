@@ -45,20 +45,7 @@
                     <ContentControl Content="{Binding Value}"/>
                 </DataTemplate>
             </TabControl.ContentTemplate>
-        </TabControl> 
-        <!--
-        <TabControl x:Name="tagsRequestResponseTabControl" TabStripPlacement="Bottom" DockPanel.Dock="Bottom" SelectedIndex="{Binding TagsTabSelectedIndex, Mode=OneWayToSource}">
-            <TabItem Header="Tags">
-                <shared:TagsActionsControl DataContext="{Binding FlattendTagsAndActions}"/>
-            </TabItem>
-            <TabItem Header="Response">
-                <shared:JsonTreeViewControl DataContext="{Binding SearchResponse.KapiResponseJson}"/>
-            </TabItem>
-            <TabItem Header="Request">
-                <shared:JsonTreeViewControl  DataContext="{Binding SearchResponse.KapiRequestJson}"/>
-            </TabItem>
-        </TabControl>
-        -->
+        </TabControl>       
     </DockPanel>
 </UserControl>
 

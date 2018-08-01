@@ -19,6 +19,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Helpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ActionViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\AppViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\BoundingBoxViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ImageInfoViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\QueryImageStoreViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\JsonConverters.cs" />

@@ -56,8 +56,7 @@ namespace VSPing.SharedViews
 
         private void img_SizeChanged(object sender, SizeChangedEventArgs e) //This method acts to update the view when an image is resized
         {
-            VM.QueryImageRenderedSize = e.NewSize;
-            VM.RemoveBB();
+            VM.UpdateQueryImageRenderedSize(e.NewSize);
         }
         private void ScrollViewer_DragEnterOver(object sender, DragEventArgs e) //This method handles images that are dragged over the ImageModSection and allows them to be searched directly
         {     
