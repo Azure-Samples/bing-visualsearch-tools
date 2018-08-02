@@ -177,6 +177,7 @@ VSPing is built on the MVVM (model-view-viewmodel) pattern. This in order to all
 ###### Tags
   - Provides a series of tags for the image
   - Each tag has its own associated actions
+	- If a tag has a non-default bounding box (box size != image size), the box is drawn on top of the query image
     - These allow for quick insights to be gleaned about the query image and facilitate follow up queries about items of interest detected in the image
   - <img src="Images/Tags.png">
 ###### Response
