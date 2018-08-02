@@ -26,7 +26,14 @@ namespace VSPing.SharedViews
         {
             InitializeComponent();
 
-            this.vm = DataContext as QueryImageStoreViewModel;
+            this.Loaded += QueryImageStoreControl_Loaded;
+            this.vm = DataContext as QueryImageStoreViewModel;            
+        }
+
+        private void QueryImageStoreControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            var gridView = (GridView)this.queryListView.View;
+            VM.UpdateGridViewColumnList(gridView.Columns);
         }
 
         private QueryImageStoreViewModel vm;
@@ -150,9 +157,10 @@ namespace VSPing.SharedViews
                 }
                 
                 this.queryListStatusBarItem.Text = $"Loaded {this.queryListView.Items.Count} items";                    
-            } catch (Exception)
-            {                
-                this.queryListStatusBarItem.Text = "Error (Check App.Config)";
+            } catch (Exception ex)
+            {
+                //MessageBox.Show(ex.ToString(), "Refresh Error");
+                this.queryListStatusBarItem.Text = $"Error: {ex.Message} (Check App.Config)";
             }
             finally
             {

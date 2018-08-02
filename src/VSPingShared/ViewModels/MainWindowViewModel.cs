@@ -13,6 +13,8 @@ using VSPing.Utils;
 
 namespace VSPing.ViewModels
 {
+
+
     public class MainWindowViewModel : BindableBase 
     {
         /// <summary>
@@ -50,6 +52,7 @@ namespace VSPing.ViewModels
             this.Tags = new MyObservableCollection();
             this.FlattendTagsAndActions = new MyObservableCollection();
             this.StatusBarItems = new MyObservableCollection();
+            this.CanvasItems = new MyObservableCollection();
 
             this.RotationSliderPosition = 0;
             this.CanIssueSearch = true;
@@ -113,6 +116,8 @@ namespace VSPing.ViewModels
         public MyObservableCollection Tags { get; set; }
         public MyObservableCollection FlattendTagsAndActions { get; protected set; }
         public MyObservableCollection StatusBarItems { get; protected set; }
+        public MyObservableCollection CanvasItems { get; protected set; }
+
         private string eventId;
         public string EventId { get { return this.eventId; } set { SetProperty(ref this.eventId, value); } }
         private string requestLatency;
@@ -123,6 +128,11 @@ namespace VSPing.ViewModels
         public string DirectQueryUrl { get; set; }
         public int TagsTabSelectedIndex { get; set; }
         
+        public virtual void UpdateQueryImageRenderedSize(Size size)
+        {
+            this.QueryImageRenderedSize = size;
+            this.UpdateBoundingBoxPositions();
+        }
 
         // Triggered by the view when dragging on the image begins. Adjusts MainWindow properties accordingly
         public void StartChangingBB(Point startPoint)
@@ -130,8 +140,7 @@ namespace VSPing.ViewModels
 
             var m = this.searchModel;
 
-            m.BB = new Rect(startPoint, startPoint);
-
+            m.BB = new Rect(startPoint, startPoint);            
             m.BBVisible = true;
 
             //
@@ -157,6 +166,43 @@ namespace VSPing.ViewModels
             this.BB = m.BB;
             m.ScaledBB = VSPing.Models.ScaledBox.From(size, m.BB);
 
+            var queryRect = this.CanvasItems.OfType<QueryBoundingBox>().FirstOrDefault();
+            if (queryRect == null)
+            {
+                queryRect = new QueryBoundingBox(m.ScaledBB.Value);
+                this.CanvasItems.Add(queryRect);
+            }
+
+            queryRect.ScaledBox = m.ScaledBB.Value;
+            queryRect.ScaleToImageSize(size);
+
+        }
+
+        public void StopChangingBB()
+        {
+            this.IsBBChanging = false;
+
+            var m = this.searchModel;
+            this.BBVisibility = (m.BB.Width > 0 && m.BB.Height > 0) ? Visibility.Visible : Visibility.Hidden;
+
+            if (this.BBVisibility == Visibility.Hidden)
+            {
+                m.ScaledBB = null;
+
+                var queryRect = this.CanvasItems.OfType<QueryBoundingBox>().FirstOrDefault();
+                if(queryRect != null)
+                {
+                    this.CanvasItems.Remove(queryRect);
+                }
+            }
+        }
+
+        // Simulate drawing an empty rect to remove existing BB
+        public void RemoveBB()
+        {
+            Point origin = new Point(0, 0);
+            StartChangingBB(origin);
+            StopChangingBB();
         }
 
         // Update QueryImageUrl and raise notification without using the setter property
@@ -243,7 +289,11 @@ namespace VSPing.ViewModels
                 this.RotationSliderPosition = 0;
                 this.RemoveBB();
 
+                this.CanvasItems.Remove(RenderQueryImageUrl);
                 this.RenderQueryImageUrl = m.TransformedImageUri.ToString();
+                this.CanvasItems.Add(this.RenderQueryImageUrl);
+
+
                 this.RotationSliderPosition = 0;
 
                 this.ClearSearchResultsUI();
@@ -253,44 +303,21 @@ namespace VSPing.ViewModels
             }
         }
 
-
         public void RotateQueryImage(double theta)
         {
             try
             {
                 var m = this.searchModel;
                 m.RotateQueryImage(theta);
+                this.CanvasItems.Remove(RenderQueryImageUrl);
                 this.RenderQueryImageUrl = m.TransformedImageUri.ToString();
+                this.CanvasItems.Add(this.RenderQueryImageUrl);
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
             }
         }
-
-
-        public void StopChangingBB()
-        {
-            this.IsBBChanging = false;
-
-            var m = this.searchModel;
-            this.BBVisibility = (m.BB.Width > 0 && m.BB.Height > 0) ? Visibility.Visible : Visibility.Hidden;
-
-            if (this.BBVisibility == Visibility.Hidden)
-            {
-                m.ScaledBB = null;
-            }
-
-        }
-
-        // Simulate drawing an empty rect to remove existing BB
-        public void RemoveBB()
-        {
-            Point origin = new Point(0, 0);
-            StartChangingBB(origin);
-            StopChangingBB();
-        }
-
 
         protected virtual void ClearSearchResultsUI()
         {
@@ -303,6 +330,10 @@ namespace VSPing.ViewModels
             this.SearchResponse = null;
 
             this.ResponseItemsTabs.Clear();
+
+            var bbsToRemove = this.CanvasItems.OfType<TagsBoundingBox>().ToArray();
+            for (int i = 0; i < bbsToRemove.Length; i++)
+                this.CanvasItems.Remove(bbsToRemove[i]);
 
             this.QueryStatus = string.Empty;
             this.RequestLatency = string.Empty;
@@ -390,6 +421,33 @@ namespace VSPing.ViewModels
             }
         }
 
+        protected virtual void RenderBoundingBoxesForTags()
+        {
+            KapiResponse ksr = this.SearchResponse as VSPing.Models.KapiResponse;
+            if (ksr == null)
+                return;
+
+            foreach(var tag in ksr.Tags)
+            {
+                if ((tag.BoundingBox?.DisplayRectangle?.IsBounded ?? false) == false)
+                    continue;
+
+                BoundingBox bb = new TagsBoundingBox(tag.DisplayName, tag.BoundingBox);                
+                this.CanvasItems.Add(bb);
+            }
+
+            this.UpdateBoundingBoxPositions();
+
+        }
+
+        protected virtual void UpdateBoundingBoxPositions()
+        {
+            foreach(var bb in this.CanvasItems.OfType<BoundingBox>())
+            {
+                bb.ScaleToImageSize(this.QueryImageRenderedSize);
+            }
+        }
+
         // Fills up MainWindowViewModel properties from the received SearchResponse object
         protected virtual void RenderSearchResponse()
         {
@@ -398,6 +456,7 @@ namespace VSPing.ViewModels
             RenderStatusBar();
             RenderDefaultTagsResults();
             RenderTagsActionsTabs();
+            RenderBoundingBoxesForTags();
         }
 
         // Updates visually bound properties, fires asynchronous Search task, renders

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -24,6 +25,14 @@ namespace VSPing.ViewModels
         public ObservableCollection<ImageInfoViewModel> QueryImages { get; set; } // List of image viewmodels currently held in this image store
         protected object queryImagesListSelectedItem; // Currently selected image in this store. Binded to from the view
         public object QueryImagesListSelectedItem { get { return this.queryImagesListSelectedItem; } set { SetProperty(ref this.queryImagesListSelectedItem, value); } }
+
+        public GridViewColumnCollection Columns { get; set; }   //programmatically set
+
+        public virtual void UpdateGridViewColumnList(GridViewColumnCollection col)
+        {
+
+        }
+
 
         public QueryImageStoreViewModel(IImageStore imageStore, AppViewModel parent)
         {
@@ -51,6 +60,26 @@ namespace VSPing.ViewModels
             }
             
             
+        }
+
+        public virtual async Task<ImageInfoViewModel> GetImage(string url)
+        {
+            var iivm = this.QueryImages.FirstOrDefault(i => i.Url == url);
+
+            if (iivm != null)
+                return iivm;
+
+            //url is not in our ViewModel. Get it from the store
+            var ii = await this.ImageStore.GetImage(url);
+
+            if (ii == null)
+                return null; //the store doesn't have it
+
+            iivm = new ImageInfoViewModel(ii, this.QueryImages.Count + 1, this.ParentViewModel);
+
+            this.QueryImages.Insert(0, iivm);
+
+            return iivm;
         }
 
         // Called when the button to copy url's from an image store is clicked.

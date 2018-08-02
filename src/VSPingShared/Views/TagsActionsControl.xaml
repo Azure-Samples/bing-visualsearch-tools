@@ -43,7 +43,7 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type localvm:ActionViewModel}">
                 <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
-                   <StackPanel.ContextMenu>
+                    <StackPanel.ContextMenu>
                         <ContextMenu ItemsSource="{Binding MenuItemNameCommands}" 
                                      Visibility="{Binding HasUrls, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <ContextMenu.ItemTemplate>
@@ -59,7 +59,6 @@
                             </ContextMenu.ItemContainerStyle>
                         </ContextMenu>
                     </StackPanel.ContextMenu>
-                    <!--> remove custom <TextBlock FontFamily="Segoe MDL2 Assets"  FontSize="18" Text="" Visibility="{Binding IsCustomAction, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,2,0" VerticalAlignment="Center"/> <!-->
                     <TextBlock Visibility="{Binding Action.HasDefaultUrl, Converter={StaticResource BooleanToVisibilityConverter}}" 
                                VerticalAlignment="Center"> <!-- This TextBlock to control visibility-->
                                 <TextBlock DataContext="{Binding Action.DefaultUrl}"> <!-- This TextBlock to host hyperlink. Hyperlink can'is not a framework element-->
