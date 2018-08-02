@@ -424,7 +424,7 @@ namespace VSPing.ViewModels
         protected virtual void RenderBoundingBoxesForTags()
         {
             KapiResponse ksr = this.SearchResponse as VSPing.Models.KapiResponse;
-            if (ksr == null)
+            if (ksr == null || ksr.Tags == null)
                 return;
 
             foreach(var tag in ksr.Tags)
