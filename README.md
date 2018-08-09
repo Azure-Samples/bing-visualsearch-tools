@@ -1,5 +1,5 @@
 ---
-services:cognitive-services
+services: cognitive-services
 platforms: dotnet
 author: vishaltmsft
 ---
