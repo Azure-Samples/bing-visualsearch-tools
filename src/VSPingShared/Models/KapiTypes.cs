@@ -6,37 +6,39 @@ using Newtonsoft.Json;
 
 namespace VSPing.Models
 {
-    public class ImageBoundingBox
+
+    /// <summary>
+    /// This class holds the properties of every bounding box
+    /// </summary>
+    public class ImageRectangle
     {
         /// <summary>
-        /// This class holds the properties of every bounding box
+        /// This class holds the properties of every image rectangle
         /// </summary>
-        public class ImageRectangle
+        public class ImagePoint
         {
             /// <summary>
-            /// This class holds the properties of every image rectangle
+            /// This class holds the x and y coordinates of a point
             /// </summary>
-            public class ImagePoint
-            {   
-                /// <summary>
-                /// This class holds the x and y coordinates of a point
-                /// </summary>
-                public float X { get; set; }
-                public float Y { get; set; }
-            }
+            public float X { get; set; }
+            public float Y { get; set; }
+        }
 
-            public ImagePoint TopLeft { get; set; }
-            public ImagePoint TopRight { get; set; }
-            public ImagePoint BottomLeft { get; set; }
-            public ImagePoint BottomRight { get; set; }
+        public ImagePoint TopLeft { get; set; }
+        public ImagePoint TopRight { get; set; }
+        public ImagePoint BottomLeft { get; set; }
+        public ImagePoint BottomRight { get; set; }
 
-            public bool IsBounded =>   TopLeft == null || TopRight == null || BottomLeft == null | BottomRight == null
-                                    ||   TopLeft.X != 0 || TopLeft.Y != 0
-                                    || TopRight.X != 1 || TopRight.Y != 0
-                                    || BottomLeft.X != 0 || BottomLeft.Y != 1
-                                    || BottomRight.X != 1 || BottomRight.Y != 1;
-        } // returns true if any of this conditions is true
+        public bool IsBounded => TopLeft == null || TopRight == null || BottomLeft == null | BottomRight == null
+                                || TopLeft.X != 0 || TopLeft.Y != 0
+                                || TopRight.X != 1 || TopRight.Y != 0
+                                || BottomLeft.X != 0 || BottomLeft.Y != 1
+                                || BottomRight.X != 1 || BottomRight.Y != 1;
+    } // returns true if any of this conditions is true
 
+    public class ImageBoundingBox
+    {
+ 
         public ImageRectangle QueryRectangle { get; set; }
         public ImageRectangle DisplayRectangle { get; set; }
 
@@ -329,6 +331,69 @@ namespace VSPing.Models
 
     }
 
+    //Text Recognition Action - This shows rich Text Recognition info in terms of Regions, Lines, Words.
+    public class TextRecognitionAction : VSPing.Models.Action
+    {
+        public class Word
+        {
+            public string Text { get; set; }
+            public ImageRectangle BoundingBox { get; set; }
+
+        }
+
+        public class Line
+        {
+            public string Text { get; set; }
+            public ImageRectangle BoundingBox { get; set; }
+
+            public List<Word> Words { get; set; }
+        }
+
+        public class Region
+        {
+            public ImageRectangle BoundingBox { get; set; }
+            public List<Line> Lines { get; set; }
+        }
+
+        public class cData
+        {
+            public ImageRectangle BoundingBox { get; set; }
+            public List<Region> Regions;
+        }
+
+        public ImageRectangle BoundingBox { get; set; }
+        public cData Data { get; set; }
+
+        private string toStringValue;
+
+        public override string ToString()
+        {
+            if (string.IsNullOrEmpty(toStringValue))
+            {
+                var sb = new System.Text.StringBuilder();
+                int region = 0;
+                sb.AppendLine("Text Recognition:");
+                foreach (var r in this.Data?.Regions ?? Enumerable.Empty<Region>())
+                {
+                    sb.Append("Region #");
+                    sb.AppendLine(region.ToString());
+                    region++;
+
+                    foreach (var l in r.Lines)
+                    {
+                        sb.Append("    ");
+                        sb.AppendLine(l.Text);
+                    }
+                }
+
+                sb.AppendLine(base.ToString());
+                this.toStringValue = sb.ToString();
+            }
+
+            return toStringValue;
+        }
+    }
+
     public class ActionFactory
     {
         /// <summary>
@@ -347,6 +412,7 @@ namespace VSPing.Models
             KnownActionTypes.Add("Entity", typeof(EntityAction));
             KnownActionTypes.Add("Uri", typeof(UriAction));
             KnownActionTypes.Add("PostalAddress", typeof(PostalAddressAction));
+            KnownActionTypes.Add("TextRecognition", typeof(TextRecognitionAction));
         }
 
         public static ActionFactory GetFactory() // Gets the singleton factory instance
