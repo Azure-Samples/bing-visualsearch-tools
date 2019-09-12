@@ -1,8 +1,14 @@
 ---
-services: cognitive-services
-platforms: dotnet
-author: vishaltmsft
+page_type: sample
+languages:
+- csharp
+- javascript
+products:
+- azure
+description: "VSPing, VSPingCmd, and VSWebApp are applications to show off the possibilities of the Bing Image Search API, and to serve as demo/debug tools for projects that use the API."
+urlFragment: bing-visualsearch-tools
 ---
+
 # Bing Visual Search Tools
 
 # Table of Contents
