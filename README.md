@@ -11,7 +11,7 @@ urlFragment: bing-visualsearch-tools
 
 # Bing Visual Search Tools
 
-# Table of Contents
+## Table of Contents
 - [Getting Started With VSPingCmd](#getting-started-with-vspingcmd)
 - [Getting Started With VSPing](#getting-started-with-vsping)
 - [Getting Started With VSWebApp](#getting-started-with-vswebapp)
@@ -19,7 +19,7 @@ urlFragment: bing-visualsearch-tools
 - [VSPing Features](#vsping-features)
 - [VSWebApp Features](#vswebapp-features)
 
-# VSPing, VSPingCmd, and VSWebApp
+## VSPing, VSPingCmd, and VSWebApp
 
 VSPing, VSPingCmd, and VSWebApp are applications to show off the possibilities of the Bing Image Search API, and to serve as demo/debug tools for projects that use the API.
 
