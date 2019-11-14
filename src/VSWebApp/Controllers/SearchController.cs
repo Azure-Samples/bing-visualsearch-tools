@@ -26,7 +26,8 @@ namespace VSWebApp.Controllers
         [HttpPost]
         public async Task Post(string mkt = null)
         {
-            var baseUri = "https://api.cognitive.microsoft.com/bing/v7.0/images/visualsearch/";
+            // Add your Azure Bing Search V7 endpoint to your environment variables
+            var baseUri = Environment.GetEnvironmentVariable("BING_SEARCH_V7_ENDPOINT") + "/bing/v7.0/images/visualsearch/";
             if(!string.IsNullOrWhiteSpace(mkt))
             {
                 baseUri = baseUri + "?mkt=" + mkt;
